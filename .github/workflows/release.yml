@@ -1,0 +1,39 @@
+name: Auto Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+" # Trigger on semantic version tags (e.g., v1.0.0)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for creating releases
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper versioning
+
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Create release archive
+        run: |
+          # Create a clean directory for release
+          mkdir -p dist/release-files
+          # Copy all files except .git, .github and dist
+          rsync -av --exclude={'.git','.github','dist'} . dist/release-files/
+          # Create archive
+          cd dist/release-files
+          tar -czf "../subscan-${{ env.VERSION }}.tar.gz" .
+          cd ../..
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/subscan-${{ env.VERSION }}.tar.gz
+          generate_release_notes: true
+          draft: false
+          prerelease: false
