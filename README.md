@@ -2,6 +2,8 @@
 
 A command-line tool for extracting hardcoded subtitles from videos, designed for macOS. It uses OCR technology to recognize text from video frames, making it especially useful for extracting hardcoded subtitles from movies, TV shows, or any video content.
 
+[![asciicast](https://asciinema.org/a/W7GO633guqkB5cq9aRvcPKoZH.svg)](https://asciinema.org/a/W7GO633guqkB5cq9aRvcPKoZH?speed=6&loop=1)
+
 ## Features
 
 - 🎯 Extract hardcoded subtitles from any video format supported by ffmpeg
